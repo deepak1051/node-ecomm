@@ -2,6 +2,9 @@ import express from 'express';
 
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.get('/', (req, res) => {
   res.send(`
     
@@ -17,20 +20,9 @@ app.get('/', (req, res) => {
 });
 
 app.post('/', (req, res) => {
-  req.on('data', (data) => {
-    const parsed = data.toString('utf8').split('&');
+  const body = req.body;
 
-    const formData = {};
-
-    for (let item of parsed) {
-      const [key, value] = item.split('=');
-      formData[key] = value;
-    }
-
-    console.log(formData);
-  });
-
-  //get access to the form data
+  console.log(body);
 
   res.send('Thanks for signing up!');
 });
