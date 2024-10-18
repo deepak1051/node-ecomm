@@ -1,5 +1,5 @@
 import express from 'express';
-
+import usersRepo from './repositories/users.js';
 const app = express();
 
 app.use(express.json());
@@ -19,10 +19,18 @@ app.get('/', (req, res) => {
   `);
 });
 
-app.post('/', (req, res) => {
-  const body = req.body;
+app.post('/', async (req, res) => {
+  const { email, password, passwordConfirm } = req.body;
 
-  console.log(body);
+  const existingUser = await usersRepo.getOneBy({ email });
+
+  if (existingUser) {
+    return res.send('Email in use');
+  }
+
+  if (password !== passwordConfirm) {
+    return res.send('Passwords do not match');
+  }
 
   res.send('Thanks for signing up!');
 });
