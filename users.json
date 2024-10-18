@@ -3,5 +3,20 @@
     "email": "test@test.com",
     "password": "test",
     "id": "409bde6e"
+  },
+  {
+    "email": "lightyagamigoku@gmail.com",
+    "password": "1234",
+    "id": "fe9c2891"
+  },
+  {
+    "email": "lighty@gmail.com",
+    "password": "123",
+    "id": "2177c1c3"
+  },
+  {
+    "email": "deepakpanwxxar1051@gmail.com",
+    "password": "12344",
+    "id": "eb6ea4d5"
   }
 ]
