@@ -1,5 +1,8 @@
+import { layout } from '../layout.js';
+
 export const signupTemplate = ({ req }) => {
-  return `<div>
+  return layout({
+    content: `<div>
   Your ID is ${req.session.userId}
   <form  method="POST" action="/signup">
     <input placeholder="Email" name="email"/>
@@ -8,5 +11,6 @@ export const signupTemplate = ({ req }) => {
 
     <button>Sign Up</button>
   </form>
-<div>`;
+<div>`,
+  });
 };
