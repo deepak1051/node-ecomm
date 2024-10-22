@@ -42,27 +42,22 @@ router.get('/signout', (req, res) => {
 });
 
 router.get('/signin', (req, res) => {
-  res.send(signinTemplate());
+  res.send(signinTemplate({}));
 });
 
 router.post(
   '/signin',
-  [check('email').trim().normalizeEmail().isEmail(), check('password').trim()],
+  [validators.requireEmailExists, validators.requireValidPasswordForUser],
   async (req, res) => {
-    const { email, password } = req.body;
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.send(signinTemplate({ errors }));
+    }
+
+    const { email } = req.body;
 
     const user = await usersRepo.getOneBy({ email });
-
-    if (!user) {
-      return res.send('Email not found');
-    }
-    const validPassword = await usersRepo.comparePasswords(
-      user.password,
-      password
-    );
-    if (!validPassword) {
-      return res.send('Incorrect password');
-    }
 
     req.session.userId = user.id; //added by cookie session
     res.send('You are signed in!');

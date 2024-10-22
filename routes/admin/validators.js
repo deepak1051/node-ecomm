@@ -1,5 +1,5 @@
 import { check } from 'express-validator';
-import UsersRepo from '../../repositories/users.js';
+import usersRepo from '../../repositories/users.js';
 
 const validators = {
   requireEmail: check('email')
@@ -8,7 +8,7 @@ const validators = {
     .isEmail()
     .withMessage('Must be a valid email')
     .custom(async (email) => {
-      const existingUser = await UsersRepo.getOneBy({ email });
+      const existingUser = await usersRepo.getOneBy({ email });
       if (existingUser) {
         throw new Error('Email in use');
       }
@@ -25,6 +25,36 @@ const validators = {
     .custom((passwordConfirmation, { req }) => {
       if (passwordConfirmation !== req.body.password) {
         throw new Error('Passwords do not match');
+      }
+    }),
+
+  requireEmailExists: check('email')
+    .trim()
+    .normalizeEmail()
+    .isEmail()
+    .withMessage('Must be a valid email')
+    .custom(async (email) => {
+      const user = await usersRepo.getOneBy({ email });
+      if (!user) {
+        throw new Error('Email not found');
+      }
+    }),
+
+  requireValidPasswordForUser: check('password')
+    .trim()
+    .custom(async (password, { req }) => {
+      const user = await usersRepo.getOneBy({ email: req.body.email });
+
+      if (!user) {
+        throw new Error('Invalid password');
+      }
+
+      const validPassword = await usersRepo.comparePasswords(
+        user.password,
+        password
+      );
+      if (!validPassword) {
+        throw new Error('Invalid password');
       }
     }),
 };

@@ -1,13 +1,5 @@
+import { getError } from '../../helpers.js';
 import { layout } from '../layout.js';
-
-const getError = (errors, prop) => {
-  //prop email, password, passwordConfirm
-  try {
-    return errors.mapped()[prop].msg;
-  } catch (e) {
-    return '';
-  }
-};
 
 export const signupTemplate = ({ req, errors }) => {
   return layout({
