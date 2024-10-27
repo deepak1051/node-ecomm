@@ -4,6 +4,8 @@ import cookieSession from 'cookie-session';
 import authRoutes from './routes/admin/auth.js';
 const app = express();
 
+app.use(express.static('public'));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(

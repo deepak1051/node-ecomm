@@ -8,8 +8,6 @@ import validators from './validators.js';
 const { requireEmail, requirePassword, requirePasswordConfirmation } =
   validators;
 
-// console.log(x.);
-
 const router = express.Router();
 
 router.get('/signup', (req, res) => {
